@@ -40,7 +40,7 @@ async def generate_graph():
         adjacency_list = json.loads(graph_json)
     else:
         adjacency_list = graph_json
-    print("Generated graph:", adjacency_list)
+    # print("Generated graph:", adjacency_list)
     return adjacency_list
 
 def get_children(emoji, adjacency_list):
