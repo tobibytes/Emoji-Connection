@@ -2,8 +2,8 @@ import threading
 import socket
 from utils import is_valid_username
 from typing import List, Dict
-host = "127.0.0.1"
-PORT = 60007
+host = "0.0.0.0"
+PORT = 60009
 
 
 class ConnectionManager:
@@ -30,6 +30,7 @@ class ConnectionManager:
             self.user_to_connection[username] = conn
             self.connnection_to_user[conn] = username
         conn.send(f"Enjoy the game {username} -1".encode('utf-8'))
+        self.print_connections_db()
 
     def terminate(self, conn: socket.socket):
         user = self.connnection_to_user[conn]
@@ -53,12 +54,14 @@ def handle_connection(conn: socket.socket, addr, conn_manager: ConnectionManager
 def main():
     connection_manager = ConnectionManager()
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # TCP/IPv4 socket
+    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server.bind((host, PORT))
     print("started listening")
     server.listen()
     try:
         while True:
             conn, addr = server.accept()
+            print(addr)
             t = threading.Thread(target=handle_connection, args=(conn, addr, connection_manager))
             t.start()
     except:
