@@ -1,5 +1,5 @@
 import socket
-PORT = 60005
+PORT = 60006
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(("127.0.0.1", PORT))
