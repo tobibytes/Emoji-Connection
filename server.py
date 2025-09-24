@@ -24,12 +24,12 @@ class ConnectionManager:
         return list(self.user_to_connection.keys())
 
     def get_username(self, conn: socket.socket):
-        conn.send("Type in your username: ".encode('utf-8'))
+        conn.send("Type in your username: \n".encode('utf-8'))
         username = conn.recv(1024).decode('utf-8')
         if is_valid_username(username):
             self.user_to_connection[username] = conn
             self.connnection_to_user[conn] = username
-        conn.send(f"Enjoy the game {username} -1".encode('utf-8'))
+        conn.send(f"Enjoy the game {username} \n-1".encode('utf-8'))
 
     def terminate(self, conn: socket.socket):
         user = self.connnection_to_user[conn]
@@ -38,7 +38,7 @@ class ConnectionManager:
         conn.close()
 
 def handle_connection(conn: socket.socket, addr, conn_manager: ConnectionManager):
-    conn.send("Hello from server -1".encode('utf-8'))
+    conn.send("Hello from server \n-1".encode('utf-8'))
     conn_manager.get_username(conn)
     start_message = "Welcome to Emoji Con\nFind the path from 😎 -----> 🤔"
     conn_manager.send_to_user(conn_manager.connnection_to_user[conn], start_message)
