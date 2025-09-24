@@ -4,21 +4,13 @@ import threading
 import time
 from typing import Dict, List, Optional, Tuple
 from server import ConnectionManager
-
-# Optional generate.py (dynamic graph); fallback to a small static graph if unavailable
-try:
-    from generate import generate_graph as _gen_graph, get_children as _gen_get_children
-    _GEN_OK, _GEN_ERR = True, None
-except Exception as e:
-    _GEN_OK, _GEN_ERR = False, e
+from generate import generate_graph as _gen_graph, get_children as _gen_get_children
 
 async def _safe_generate_graph():
-    if _GEN_OK:
-        return await _gen_graph()
-    raise RuntimeError(f"generate import failed: {_GEN_ERR}")
+    return await _gen_graph()
 
 def _safe_get_children(emoji: str, adj: Dict[str, List[str]]) -> List[str]:
-    return _gen_get_children(emoji, adj) if _GEN_OK else adj.get(emoji, [])
+    return _gen_get_children(emoji, adj) 
 
 SMALL_GRAPH: Dict[str, List[str]] = {
     "😀": ["😃", "🙂"],
@@ -51,10 +43,8 @@ class GameLogic:
     def __init__(self):
         if getattr(self, "_initialized", False):
             return
-        try:
-            self.adjacency_list: Dict[str, List[str]] = asyncio.run(_safe_generate_graph())
-        except Exception:
-            self.adjacency_list = SMALL_GRAPH
+        self.adjacency_list: Dict[str, List[str]] = asyncio.run(_safe_generate_graph())
+        print(self.adjacency_list)
         self.user_score: Dict[str, float] = {}
         self._score_lock = threading.Lock()
         self.start_value: Optional[str] = None
