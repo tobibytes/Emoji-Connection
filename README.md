@@ -22,6 +22,8 @@ get_children(node)
 
 ## Connections
 write client code and server code
+client only sends their info and emojis
+server receives the info and sends back whatever is needed
 
 # Ways to one wins
 1. got to the answer in less time than the opponent
