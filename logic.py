@@ -12,16 +12,6 @@ async def _safe_generate_graph():
 def _safe_get_children(emoji: str, adj: Dict[str, List[str]]) -> List[str]:
     return _gen_get_children(emoji, adj) 
 
-SMALL_GRAPH: Dict[str, List[str]] = {
-    "😀": ["😃", "🙂"],
-    "😃": ["😀", "😊"],
-    "🙂": ["😀", "😊"],
-    "😊": ["🙂", "😃", "🥰"],
-    "🥰": ["😊", "😍"],
-    "😍": ["🥰", "😉"],
-    "😉": ["😍"],
-}
-
 GAME_TIME_MINUTES = 1
 
 

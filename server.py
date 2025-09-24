@@ -1,11 +1,13 @@
 import threading
 import socket
 from typing import List, Dict
+import os
 from utils import is_valid_username
+from dotenv import load_dotenv
+load_dotenv()
 
-host = "0.0.0.0"
-PORT = 60009
-
+host = os.getenv("SERVER_HOST", "0.0.0.0")
+PORT = int(os.getenv("SERVER_PORT", "60009"))
 
 class ConnectionManager:
     _instance = None
